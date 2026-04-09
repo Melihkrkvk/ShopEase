@@ -1,0 +1,117 @@
+<mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+
+    <!-- ===== FACTORY METHOD ===== -->
+    <mxCell id="2" value="Factory Method Pattern — Payment Providers" style="text;html=1;strokeColor=none;fillColor=none;fontSize=15;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+      <mxGeometry x="40" y="30" width="500" height="30" as="geometry" />
+    </mxCell>
+
+    <!-- PaymentProvider ABC -->
+    <mxCell id="3" value="«abstract»&#xa;PaymentProvider" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="300" y="90" width="200" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="4" value="+ process(amount: float): bool" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#6c8ebf;fontSize=11;align=left;spacingLeft=6;" vertex="1" parent="1">
+      <mxGeometry x="300" y="140" width="200" height="30" as="geometry" />
+    </mxCell>
+
+    <!-- CreditCardPayment -->
+    <mxCell id="5" value="CreditCardPayment" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="100" y="270" width="200" height="40" as="geometry" />
+    </mxCell>
+    <mxCell id="6" value="- _max_amount: float&#xa;+ process(amount): bool" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#6c8ebf;fontSize=11;align=left;spacingLeft=6;" vertex="1" parent="1">
+      <mxGeometry x="100" y="310" width="200" height="40" as="geometry" />
+    </mxCell>
+
+    <!-- PayPalPayment -->
+    <mxCell id="7" value="PayPalPayment" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="500" y="270" width="200" height="40" as="geometry" />
+    </mxCell>
+    <mxCell id="8" value="- _max_amount: float&#xa;+ process(amount): bool" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#6c8ebf;fontSize=11;align=left;spacingLeft=6;" vertex="1" parent="1">
+      <mxGeometry x="500" y="310" width="200" height="40" as="geometry" />
+    </mxCell>
+
+    <!-- Inheritance -->
+    <mxCell id="9" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=0;strokeColor=#6c8ebf;" edge="1" parent="1" source="3" target="5">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="10" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=0;strokeColor=#6c8ebf;" edge="1" parent="1" source="3" target="7">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- PaymentFactory -->
+    <mxCell id="11" value="PaymentFactory" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="820" y="90" width="220" height="40" as="geometry" />
+    </mxCell>
+    <mxCell id="12" value="- _providers: dict&#xa;+ create(method): PaymentProvider&#xa;+ get_available_methods(): list" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#82b366;fontSize=11;align=left;spacingLeft=6;" vertex="1" parent="1">
+      <mxGeometry x="820" y="130" width="220" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- Factory creates -->
+    <mxCell id="13" value="creates" style="edgeStyle=orthogonalEdgeStyle;dashed=1;strokeColor=#82b366;fontColor=#82b366;fontSize=11;endArrow=open;endFill=0;" edge="1" parent="1" source="11" target="3">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Usage note -->
+    <mxCell id="14" value="PaymentFactory.create('credit_card')&#xa;→ returns CreditCardPayment&#xa;&#xa;PaymentFactory.create('paypal')&#xa;→ returns PayPalPayment&#xa;&#xa;New provider = new subclass only&#xa;No other changes needed." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=left;spacingLeft=10;" vertex="1" parent="1">
+      <mxGeometry x="820" y="240" width="260" height="130" as="geometry" />
+    </mxCell>
+
+    <!-- ===== OBSERVER PATTERN ===== -->
+    <mxCell id="20" value="Observer Pattern — Order Notifications" style="text;html=1;strokeColor=none;fillColor=none;fontSize=15;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+      <mxGeometry x="40" y="480" width="500" height="30" as="geometry" />
+    </mxCell>
+
+    <!-- OrderObserver ABC -->
+    <mxCell id="21" value="«abstract»&#xa;OrderObserver" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="300" y="540" width="200" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="22" value="+ on_order_placed(order): None" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#b85450;fontSize=11;align=left;spacingLeft=6;" vertex="1" parent="1">
+      <mxGeometry x="300" y="590" width="200" height="30" as="geometry" />
+    </mxCell>
+
+    <!-- EmailNotifier -->
+    <mxCell id="23" value="EmailNotifier" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="100" y="720" width="200" height="40" as="geometry" />
+    </mxCell>
+    <mxCell id="24" value="+ on_order_placed(order)&#xa;  → sends confirmation email" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#b85450;fontSize=11;align=left;spacingLeft=6;" vertex="1" parent="1">
+      <mxGeometry x="100" y="760" width="200" height="40" as="geometry" />
+    </mxCell>
+
+    <!-- InventoryUpdater -->
+    <mxCell id="25" value="InventoryUpdater" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="500" y="720" width="200" height="40" as="geometry" />
+    </mxCell>
+    <mxCell id="26" value="+ on_order_placed(order)&#xa;  → decrements stock" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#b85450;fontSize=11;align=left;spacingLeft=6;" vertex="1" parent="1">
+      <mxGeometry x="500" y="760" width="200" height="40" as="geometry" />
+    </mxCell>
+
+    <!-- Inheritance -->
+    <mxCell id="27" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=0;strokeColor=#b85450;" edge="1" parent="1" source="21" target="23">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="28" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=0;strokeColor=#b85450;" edge="1" parent="1" source="21" target="25">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- OrderService -->
+    <mxCell id="29" value="OrderService  (Subject)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="820" y="540" width="240" height="40" as="geometry" />
+    </mxCell>
+    <mxCell id="30" value="- _observers: list[OrderObserver]&#xa;- _lock: RLock&#xa;+ place_order(user_id, method): Order&#xa;+ _notify(order): None" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#82b366;fontSize=11;align=left;spacingLeft=6;" vertex="1" parent="1">
+      <mxGeometry x="820" y="580" width="240" height="70" as="geometry" />
+    </mxCell>
+
+    <!-- OrderService notifies -->
+    <mxCell id="31" value="notifies" style="edgeStyle=orthogonalEdgeStyle;dashed=1;strokeColor=#82b366;fontColor=#82b366;fontSize=11;endArrow=open;endFill=0;" edge="1" parent="1" source="29" target="21">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Usage note -->
+    <mxCell id="32" value="After place_order() succeeds:&#xa;&#xa;for observer in _observers:&#xa;    observer.on_order_placed(order)&#xa;&#xa;New notification type = new subclass only.&#xa;OrderService never changes." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=left;spacingLeft=10;" vertex="1" parent="1">
+      <mxGeometry x="820" y="700" width="260" height="130" as="geometry" />
+    </mxCell>
+
+  </root>
+</mxGraphModel>

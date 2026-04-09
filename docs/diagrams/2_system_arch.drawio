@@ -1,0 +1,135 @@
+<mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="827" math="0" shadow="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+
+    <!-- Frontend Swimlane -->
+    <mxCell id="2" value="Frontend" style="swimlane;startSize=30;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+      <mxGeometry x="40" y="40" width="540" height="500" as="geometry" />
+    </mxCell>
+
+    <!-- Pages -->
+    <mxCell id="3" value="Pages" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;" vertex="1" parent="2">
+      <mxGeometry x="40" y="80" width="460" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="4" value="LoginPage  /  RegisterPage  /  ProductsPage  /  CartPage  /  OrdersPage  /  AdminProductsPage" style="text;html=1;align=center;fontSize=10;fontColor=#555555;" vertex="1" parent="2">
+      <mxGeometry x="40" y="100" width="460" height="20" as="geometry" />
+    </mxCell>
+
+    <!-- Components -->
+    <mxCell id="5" value="Components" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;" vertex="1" parent="2">
+      <mxGeometry x="40" y="200" width="200" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="6" value="Navbar  /  ProductCard  /  CartItem" style="text;html=1;align=center;fontSize=10;fontColor=#555555;" vertex="1" parent="2">
+      <mxGeometry x="40" y="218" width="200" height="20" as="geometry" />
+    </mxCell>
+
+    <!-- Frontend Services -->
+    <mxCell id="7" value="services/" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;" vertex="1" parent="2">
+      <mxGeometry x="300" y="200" width="200" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="8" value="api.ts  /  authService  /  productService  /  orderService" style="text;html=1;align=center;fontSize=10;fontColor=#555555;" vertex="1" parent="2">
+      <mxGeometry x="300" y="218" width="200" height="20" as="geometry" />
+    </mxCell>
+
+    <!-- Pages -> Components -->
+    <mxCell id="9" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#6c8ebf;" edge="1" parent="2" source="3" target="5">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Pages -> Services -->
+    <mxCell id="10" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#6c8ebf;" edge="1" parent="2" source="3" target="7">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Auth note -->
+    <mxCell id="11" value="JWT stored in localStorage" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="2">
+      <mxGeometry x="150" y="340" width="240" height="40" as="geometry" />
+    </mxCell>
+    <mxCell id="12" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#d6b656;dashed=1;" edge="1" parent="2" source="7" target="11">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- React Router note -->
+    <mxCell id="13" value="React Router — client-side routing" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="2">
+      <mxGeometry x="150" y="410" width="240" height="40" as="geometry" />
+    </mxCell>
+
+    <!-- Backend Swimlane -->
+    <mxCell id="20" value="Backend" style="swimlane;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+      <mxGeometry x="660" y="40" width="600" height="500" as="geometry" />
+    </mxCell>
+
+    <!-- Router layer -->
+    <mxCell id="21" value="Routers  (api/v1/)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;fontSize=12;fontStyle=1;" vertex="1" parent="20">
+      <mxGeometry x="40" y="80" width="520" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="22" value="auth.py  /  users.py  /  products.py  /  orders.py  —  FastAPI Depends() for DI" style="text;html=1;align=center;fontSize=10;fontColor=#555555;" vertex="1" parent="20">
+      <mxGeometry x="40" y="98" width="520" height="20" as="geometry" />
+    </mxCell>
+
+    <!-- Services layer -->
+    <mxCell id="23" value="Services" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;fontSize=12;fontStyle=1;" vertex="1" parent="20">
+      <mxGeometry x="40" y="190" width="300" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="24" value="UserService  /  AuthService  /  ProductService&#xa;CartService  /  OrderService" style="text;html=1;align=center;fontSize=10;fontColor=#555555;" vertex="1" parent="20">
+      <mxGeometry x="40" y="205" width="300" height="30" as="geometry" />
+    </mxCell>
+
+    <!-- Cache -->
+    <mxCell id="25" value="InMemoryCache" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;" vertex="1" parent="20">
+      <mxGeometry x="380" y="190" width="180" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="26" value="TTL + RLock" style="text;html=1;align=center;fontSize=10;fontColor=#555555;" vertex="1" parent="20">
+      <mxGeometry x="380" y="210" width="180" height="20" as="geometry" />
+    </mxCell>
+
+    <!-- Services <-> Cache -->
+    <mxCell id="27" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#d6b656;endArrow=block;startArrow=block;startFill=0;endFill=0;" edge="1" parent="20" source="23" target="25">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Repositories layer -->
+    <mxCell id="28" value="Repositories" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;fontSize=12;fontStyle=1;" vertex="1" parent="20">
+      <mxGeometry x="40" y="300" width="520" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="29" value="UserRepository  /  ProductRepository  /  OrderRepository  —  dict → domain object" style="text;html=1;align=center;fontSize=10;fontColor=#555555;" vertex="1" parent="20">
+      <mxGeometry x="40" y="318" width="520" height="20" as="geometry" />
+    </mxCell>
+
+    <!-- DAOs layer -->
+    <mxCell id="30" value="DAOs" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;fontSize=12;fontStyle=1;" vertex="1" parent="20">
+      <mxGeometry x="40" y="410" width="520" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="31" value="UserDAO  /  ProductDAO  /  OrderDAO  /  OrderItemDAO  /  CartItemDAO  —  raw SQL only" style="text;html=1;align=center;fontSize=10;fontColor=#555555;" vertex="1" parent="20">
+      <mxGeometry x="40" y="428" width="520" height="20" as="geometry" />
+    </mxCell>
+
+    <!-- Arrows inside backend -->
+    <mxCell id="32" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#555555;" edge="1" parent="20" source="21" target="23">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="33" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#555555;" edge="1" parent="20" source="23" target="28">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="34" value="" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#555555;" edge="1" parent="20" source="28" target="30">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Database -->
+    <mxCell id="40" value="Database&#xa;SQLite (dev) / PostgreSQL (prod)" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="860" y="610" width="200" height="80" as="geometry" />
+    </mxCell>
+
+    <!-- Backend DAOs -> DB -->
+    <mxCell id="41" value="raw SQL" style="edgeStyle=orthogonalEdgeStyle;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeColor=#b85450;fontColor=#b85450;fontSize=10;" edge="1" parent="1" source="30" target="40">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Frontend services -> Backend router -->
+    <mxCell id="42" value="fetch + JWT Bearer" style="edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#6c8ebf;fontColor=#6c8ebf;fontSize=11;fontStyle=1;" edge="1" parent="1" source="7" target="21">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+  </root>
+</mxGraphModel>

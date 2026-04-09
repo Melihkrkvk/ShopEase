@@ -1,0 +1,136 @@
+<mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+
+    <!-- Title -->
+    <mxCell id="2" value="Order Placement Flow — Sequence Diagram" style="text;html=1;strokeColor=none;fillColor=none;fontSize=15;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+      <mxGeometry x="40" y="20" width="500" height="30" as="geometry" />
+    </mxCell>
+
+    <!-- Lifeline headers -->
+    <mxCell id="10" value="User" style="shape=mxgraph.flowchart.actor;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="60" y="70" width="50" height="60" as="geometry" />
+    </mxCell>
+    <mxCell id="11" value="Router" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="220" y="80" width="120" height="40" as="geometry" />
+    </mxCell>
+    <mxCell id="12" value="OrderService" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="440" y="80" width="140" height="40" as="geometry" />
+    </mxCell>
+    <mxCell id="13" value="CartService" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="680" y="80" width="130" height="40" as="geometry" />
+    </mxCell>
+    <mxCell id="14" value="PaymentFactory" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="910" y="80" width="140" height="40" as="geometry" />
+    </mxCell>
+    <mxCell id="15" value="PaymentProvider" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="1150" y="80" width="150" height="40" as="geometry" />
+    </mxCell>
+    <mxCell id="16" value="Observers" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="1400" y="80" width="130" height="40" as="geometry" />
+    </mxCell>
+
+    <!-- Lifelines (vertical dashed lines) -->
+    <mxCell id="20" value="" style="edgeStyle=none;dashed=1;strokeColor=#6c8ebf;exitX=0.5;exitY=1;entryX=0.5;entryY=1;" edge="1" parent="1" source="10" target="10">
+      <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="85" y="1050" /></Array></mxGeometry>
+    </mxCell>
+    <mxCell id="100" value="" style="line;strokeColor=#6c8ebf;dashed=1;" vertex="1" parent="1">
+      <mxGeometry x="84" y="130" width="1" height="920" as="geometry" />
+    </mxCell>
+    <mxCell id="101" value="" style="line;strokeColor=#6c8ebf;dashed=1;" vertex="1" parent="1">
+      <mxGeometry x="280" y="120" width="1" height="930" as="geometry" />
+    </mxCell>
+    <mxCell id="102" value="" style="line;strokeColor=#82b366;dashed=1;" vertex="1" parent="1">
+      <mxGeometry x="510" y="120" width="1" height="930" as="geometry" />
+    </mxCell>
+    <mxCell id="103" value="" style="line;strokeColor=#82b366;dashed=1;" vertex="1" parent="1">
+      <mxGeometry x="745" y="120" width="1" height="930" as="geometry" />
+    </mxCell>
+    <mxCell id="104" value="" style="line;strokeColor=#d6b656;dashed=1;" vertex="1" parent="1">
+      <mxGeometry x="980" y="120" width="1" height="930" as="geometry" />
+    </mxCell>
+    <mxCell id="105" value="" style="line;strokeColor=#d6b656;dashed=1;" vertex="1" parent="1">
+      <mxGeometry x="1225" y="120" width="1" height="930" as="geometry" />
+    </mxCell>
+    <mxCell id="106" value="" style="line;strokeColor=#b85450;dashed=1;" vertex="1" parent="1">
+      <mxGeometry x="1465" y="120" width="1" height="930" as="geometry" />
+    </mxCell>
+
+    <!-- Step 1: User -> Router -->
+    <mxCell id="200" value="POST /api/v1/orders  { payment_method }" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#333333;fontSize=11;fontStyle=0;endArrow=block;endFill=1;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry"><mxPoint x="84" y="200" as="sourcePoint" /><mxPoint x="280" y="200" as="targetPoint" /></mxGeometry>
+    </mxCell>
+
+    <!-- Step 2: Router -> OrderService -->
+    <mxCell id="201" value="place_order(user_id, method)" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#333333;fontSize=11;endArrow=block;endFill=1;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry"><mxPoint x="280" y="260" as="sourcePoint" /><mxPoint x="510" y="260" as="targetPoint" /></mxGeometry>
+    </mxCell>
+
+    <!-- Step 3: OrderService -> CartService -->
+    <mxCell id="202" value="get_cart(user_id)" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#333333;fontSize=11;endArrow=block;endFill=1;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry"><mxPoint x="510" y="320" as="sourcePoint" /><mxPoint x="745" y="320" as="targetPoint" /></mxGeometry>
+    </mxCell>
+
+    <!-- Step 4: CartService -> OrderService (return) -->
+    <mxCell id="203" value="cart items" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#555555;dashed=1;fontSize=11;endArrow=open;endFill=0;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry"><mxPoint x="745" y="370" as="sourcePoint" /><mxPoint x="510" y="370" as="targetPoint" /></mxGeometry>
+    </mxCell>
+
+    <!-- Step 5: OrderService -> PaymentFactory -->
+    <mxCell id="204" value="create(method)" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#333333;fontSize=11;endArrow=block;endFill=1;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry"><mxPoint x="510" y="430" as="sourcePoint" /><mxPoint x="980" y="430" as="targetPoint" /></mxGeometry>
+    </mxCell>
+
+    <!-- Step 6: PaymentFactory -> OrderService (return) -->
+    <mxCell id="205" value="PaymentProvider instance" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#555555;dashed=1;fontSize=11;endArrow=open;endFill=0;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry"><mxPoint x="980" y="480" as="sourcePoint" /><mxPoint x="510" y="480" as="targetPoint" /></mxGeometry>
+    </mxCell>
+
+    <!-- Step 7: OrderService -> PaymentProvider -->
+    <mxCell id="206" value="process(total)" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#333333;fontSize=11;endArrow=block;endFill=1;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry"><mxPoint x="510" y="540" as="sourcePoint" /><mxPoint x="1225" y="540" as="targetPoint" /></mxGeometry>
+    </mxCell>
+
+    <!-- Step 8: PaymentProvider -> OrderService (return) -->
+    <mxCell id="207" value="success" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#555555;dashed=1;fontSize=11;endArrow=open;endFill=0;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry"><mxPoint x="1225" y="590" as="sourcePoint" /><mxPoint x="510" y="590" as="targetPoint" /></mxGeometry>
+    </mxCell>
+
+    <!-- Step 9: persist (self) -->
+    <mxCell id="208" value="persist order + items to DB" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="430" y="630" width="160" height="30" as="geometry" />
+    </mxCell>
+
+    <!-- Step 10: OrderService -> CartService (clear) -->
+    <mxCell id="209" value="clear_cart(user_id)" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#333333;fontSize=11;endArrow=block;endFill=1;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry"><mxPoint x="510" y="700" as="sourcePoint" /><mxPoint x="745" y="700" as="targetPoint" /></mxGeometry>
+    </mxCell>
+
+    <!-- Step 11: CartService ack -->
+    <mxCell id="210" value="ok" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#555555;dashed=1;fontSize=11;endArrow=open;endFill=0;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry"><mxPoint x="745" y="740" as="sourcePoint" /><mxPoint x="510" y="740" as="targetPoint" /></mxGeometry>
+    </mxCell>
+
+    <!-- Step 12: notify loop label -->
+    <mxCell id="211" value="loop  [for each observer]" style="text;html=1;fontSize=10;fontStyle=2;fontColor=#b85450;" vertex="1" parent="1">
+      <mxGeometry x="530" y="770" width="180" height="20" as="geometry" />
+    </mxCell>
+
+    <!-- Step 13: OrderService -> Observers -->
+    <mxCell id="212" value="on_order_placed(order)" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#b85450;fontColor=#b85450;fontSize=11;endArrow=block;endFill=1;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry"><mxPoint x="510" y="800" as="sourcePoint" /><mxPoint x="1465" y="800" as="targetPoint" /></mxGeometry>
+    </mxCell>
+
+    <!-- Step 14: Router returns -->
+    <mxCell id="213" value="Order (id, total, status)" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#555555;dashed=1;fontSize=11;endArrow=open;endFill=0;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry"><mxPoint x="510" y="880" as="sourcePoint" /><mxPoint x="280" y="880" as="targetPoint" /></mxGeometry>
+    </mxCell>
+
+    <!-- Step 15: User gets 201 -->
+    <mxCell id="214" value="201 Created" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#555555;dashed=1;fontSize=11;endArrow=open;endFill=0;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry"><mxPoint x="280" y="930" as="sourcePoint" /><mxPoint x="84" y="930" as="targetPoint" /></mxGeometry>
+    </mxCell>
+
+  </root>
+</mxGraphModel>

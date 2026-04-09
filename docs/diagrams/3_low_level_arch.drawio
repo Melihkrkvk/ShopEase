@@ -1,0 +1,154 @@
+<mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+
+    <!-- ===== DAO HIERARCHY ===== -->
+    <mxCell id="2" value="DAO Layer" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;fontSize=14;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+      <mxGeometry x="40" y="30" width="120" height="30" as="geometry" />
+    </mxCell>
+
+    <!-- BaseDAO -->
+    <mxCell id="3" value="«abstract»&#xa;BaseDAO" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;align=center;" vertex="1" parent="1">
+      <mxGeometry x="340" y="70" width="200" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="4" value="+ find_by_id(id): dict&#xa;+ insert(data): dict&#xa;+ update(id, data): dict&#xa;+ delete(id): bool&#xa;+ find_all(): list" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#6c8ebf;fontSize=11;align=left;spacingLeft=6;" vertex="1" parent="1">
+      <mxGeometry x="340" y="120" width="200" height="90" as="geometry" />
+    </mxCell>
+
+    <!-- UserDAO -->
+    <mxCell id="5" value="UserDAO" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="40" y="310" width="160" height="40" as="geometry" />
+    </mxCell>
+    <mxCell id="6" value="+ find_by_email(email): dict" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#6c8ebf;fontSize=11;align=left;spacingLeft=6;" vertex="1" parent="1">
+      <mxGeometry x="40" y="350" width="160" height="30" as="geometry" />
+    </mxCell>
+
+    <!-- ProductDAO -->
+    <mxCell id="7" value="ProductDAO" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="230" y="310" width="160" height="40" as="geometry" />
+    </mxCell>
+    <mxCell id="8" value="+ find_by_category(cat): list&#xa;+ search(query): list" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#6c8ebf;fontSize=11;align=left;spacingLeft=6;" vertex="1" parent="1">
+      <mxGeometry x="230" y="350" width="160" height="40" as="geometry" />
+    </mxCell>
+
+    <!-- OrderDAO -->
+    <mxCell id="9" value="OrderDAO" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="420" y="310" width="160" height="40" as="geometry" />
+    </mxCell>
+    <mxCell id="10" value="+ find_by_user(user_id): list" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#6c8ebf;fontSize=11;align=left;spacingLeft=6;" vertex="1" parent="1">
+      <mxGeometry x="420" y="350" width="160" height="30" as="geometry" />
+    </mxCell>
+
+    <!-- CartItemDAO -->
+    <mxCell id="11" value="CartItemDAO" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="610" y="310" width="160" height="40" as="geometry" />
+    </mxCell>
+    <mxCell id="12" value="+ find_by_cart(cart_id): list&#xa;+ delete_by_cart(cart_id)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#6c8ebf;fontSize=11;align=left;spacingLeft=6;" vertex="1" parent="1">
+      <mxGeometry x="610" y="350" width="160" height="40" as="geometry" />
+    </mxCell>
+
+    <!-- Inheritance arrows: BaseDAO -> subclasses -->
+    <mxCell id="13" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=0;strokeColor=#6c8ebf;" edge="1" parent="1" source="3" target="5">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="14" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=0;strokeColor=#6c8ebf;" edge="1" parent="1" source="3" target="7">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="15" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=0;strokeColor=#6c8ebf;" edge="1" parent="1" source="3" target="9">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="16" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=0;strokeColor=#6c8ebf;" edge="1" parent="1" source="3" target="11">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- ===== REPOSITORY HIERARCHY ===== -->
+    <mxCell id="30" value="Repository Layer" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=14;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+      <mxGeometry x="40" y="470" width="160" height="30" as="geometry" />
+    </mxCell>
+
+    <!-- BaseRepository -->
+    <mxCell id="31" value="«abstract»&#xa;BaseRepository" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="300" y="510" width="200" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="32" value="+ get_by_id(id): domain&#xa;+ save(entity): domain&#xa;+ delete(id): None&#xa;+ get_all(): list" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#82b366;fontSize=11;align=left;spacingLeft=6;" vertex="1" parent="1">
+      <mxGeometry x="300" y="560" width="200" height="70" as="geometry" />
+    </mxCell>
+
+    <!-- UserRepository -->
+    <mxCell id="33" value="UserRepository" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="80" y="730" width="180" height="40" as="geometry" />
+    </mxCell>
+    <mxCell id="34" value="+ get_by_email(email): User" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#82b366;fontSize=11;align=left;spacingLeft=6;" vertex="1" parent="1">
+      <mxGeometry x="80" y="770" width="180" height="30" as="geometry" />
+    </mxCell>
+
+    <!-- ProductRepository -->
+    <mxCell id="35" value="ProductRepository" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="300" y="730" width="200" height="40" as="geometry" />
+    </mxCell>
+    <mxCell id="36" value="+ search(q, category): list[Product]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#82b366;fontSize=11;align=left;spacingLeft=6;" vertex="1" parent="1">
+      <mxGeometry x="300" y="770" width="200" height="30" as="geometry" />
+    </mxCell>
+
+    <!-- OrderRepository -->
+    <mxCell id="37" value="OrderRepository" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="540" y="730" width="180" height="40" as="geometry" />
+    </mxCell>
+    <mxCell id="38" value="+ get_by_user(user_id): list[Order]" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#82b366;fontSize=11;align=left;spacingLeft=6;" vertex="1" parent="1">
+      <mxGeometry x="540" y="770" width="180" height="30" as="geometry" />
+    </mxCell>
+
+    <!-- Inheritance arrows -->
+    <mxCell id="39" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=0;strokeColor=#82b366;" edge="1" parent="1" source="31" target="33">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="40" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=0;strokeColor=#82b366;" edge="1" parent="1" source="31" target="35">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="41" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=0;strokeColor=#82b366;" edge="1" parent="1" source="31" target="37">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- ===== CACHE HIERARCHY ===== -->
+    <mxCell id="50" value="Cache Layer" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=14;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+      <mxGeometry x="840" y="470" width="120" height="30" as="geometry" />
+    </mxCell>
+
+    <!-- CacheService -->
+    <mxCell id="51" value="«abstract»&#xa;CacheService" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="840" y="510" width="200" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="52" value="+ get(key): object&#xa;+ set(key, value, ttl)&#xa;+ delete(key)&#xa;+ clear()" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#d6b656;fontSize=11;align=left;spacingLeft=6;" vertex="1" parent="1">
+      <mxGeometry x="840" y="560" width="200" height="70" as="geometry" />
+    </mxCell>
+
+    <!-- InMemoryCache -->
+    <mxCell id="53" value="InMemoryCache" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="840" y="730" width="200" height="40" as="geometry" />
+    </mxCell>
+    <mxCell id="54" value="- _store: dict&#xa;- _lock: RLock&#xa;+ get / set / delete / clear" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#d6b656;fontSize=11;align=left;spacingLeft=6;" vertex="1" parent="1">
+      <mxGeometry x="840" y="770" width="200" height="50" as="geometry" />
+    </mxCell>
+
+    <mxCell id="55" value="" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=0;strokeColor=#d6b656;" edge="1" parent="1" source="51" target="53">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- ProductService uses -->
+    <mxCell id="60" value="ProductService" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="1120" y="600" width="200" height="40" as="geometry" />
+    </mxCell>
+    <mxCell id="61" value="- _repo: ProductRepository&#xa;- _cache: CacheService&#xa;+ get_by_id / get_all&#xa;+ create / update / delete" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#b85450;fontSize=11;align=left;spacingLeft=6;" vertex="1" parent="1">
+      <mxGeometry x="1120" y="640" width="200" height="70" as="geometry" />
+    </mxCell>
+
+    <mxCell id="62" value="uses" style="edgeStyle=orthogonalEdgeStyle;dashed=1;strokeColor=#b85450;fontColor=#b85450;fontSize=10;endArrow=open;endFill=0;" edge="1" parent="1" source="60" target="35">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="63" value="uses" style="edgeStyle=orthogonalEdgeStyle;dashed=1;strokeColor=#d6b656;fontColor=#d6b656;fontSize=10;endArrow=open;endFill=0;" edge="1" parent="1" source="60" target="51">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+  </root>
+</mxGraphModel>

@@ -1,0 +1,290 @@
+# Low Level Design
+
+End-to-end execution traces for every major operation. Each diagram follows a single request from the HTTP boundary down to the database and back.
+
+---
+
+## 1. User Registration
+
+```mermaid
+sequenceDiagram
+    actor Client
+    participant Router as auth.py
+    participant AuthSvc as AuthService
+    participant UserSvc as UserService
+    participant Repo as UserRepository
+    participant DAO as UserDAO
+    participant DB as SQLite / PostgreSQL
+
+    Client->>Router: POST /api/v1/auth/register\n{ email, password, name }
+    Router->>Router: Pydantic validates UserCreate
+    Router->>UserSvc: register(email, password, name)
+    UserSvc->>Repo: get_by_email(email)
+    Repo->>DAO: find_by_email(email)
+    DAO->>DB: SELECT * FROM users WHERE email = ?
+    DB-->>DAO: None
+    DAO-->>Repo: None
+    Repo-->>UserSvc: None
+    UserSvc->>UserSvc: bcrypt.hash(password)
+    UserSvc->>Repo: save(User(...))
+    Repo->>DAO: insert({ email, hashed_pw, name })
+    DAO->>DB: INSERT INTO users ...
+    DB-->>DAO: lastrowid
+    DAO->>DB: SELECT * FROM users WHERE id = lastrowid
+    DB-->>DAO: row dict
+    DAO-->>Repo: row dict
+    Repo-->>UserSvc: User(id=N, ...)
+    UserSvc-->>Router: User
+    Router-->>Client: 201 UserResponse
+```
+
+---
+
+## 2. Login and JWT Issuance
+
+```mermaid
+sequenceDiagram
+    actor Client
+    participant Router as auth.py
+    participant AuthSvc as AuthService
+    participant Repo as UserRepository
+    participant DAO as UserDAO
+    participant DB as SQLite / PostgreSQL
+
+    Client->>Router: POST /api/v1/auth/login\n{ email, password }
+    Router->>AuthSvc: login(email, password)
+    AuthSvc->>Repo: get_by_email(email)
+    Repo->>DAO: find_by_email(email)
+    DAO->>DB: SELECT * FROM users WHERE email = ?
+    DB-->>DAO: row dict
+    DAO-->>Repo: row dict
+    Repo-->>AuthSvc: User
+    AuthSvc->>AuthSvc: bcrypt.verify(password, user.password)
+    AuthSvc->>AuthSvc: jose.jwt.encode({ sub: user.id, exp })
+    AuthSvc-->>Router: token string
+    Router-->>Client: 200 { access_token }
+```
+
+---
+
+## 3. Product Read with Cache
+
+```mermaid
+sequenceDiagram
+    actor Client
+    participant Router as products.py
+    participant Dep as get_current_user
+    participant AuthSvc as AuthService
+    participant ProductSvc as ProductService
+    participant Cache as InMemoryCache
+    participant Repo as ProductRepository
+    participant DAO as ProductDAO
+    participant DB as SQLite / PostgreSQL
+
+    Client->>Router: GET /api/v1/products/{id}\nAuthorization: Bearer <token>
+    Router->>Dep: get_current_user(token)
+    Dep->>AuthSvc: get_current_user(token)
+    AuthSvc-->>Dep: User
+    Dep-->>Router: User
+    Router->>ProductSvc: get_by_id(id)
+    ProductSvc->>Cache: get("product:{id}")
+    alt Cache hit
+        Cache-->>ProductSvc: Product
+    else Cache miss
+        Cache-->>ProductSvc: None
+        ProductSvc->>Repo: get_by_id(id)
+        Repo->>DAO: find_by_id(id)
+        DAO->>DB: SELECT * FROM products WHERE id = ?
+        DB-->>DAO: row dict
+        DAO-->>Repo: row dict
+        Repo-->>ProductSvc: Product
+        ProductSvc->>Cache: set("product:{id}", Product, ttl=300)
+    end
+    ProductSvc-->>Router: Product
+    Router-->>Client: 200 ProductResponse
+```
+
+---
+
+## 4. Add to Cart
+
+```mermaid
+sequenceDiagram
+    actor Client
+    participant Router as orders.py
+    participant CartSvc as CartService
+    participant ProductSvc as ProductService
+    participant Repo as OrderRepository
+    participant CartDAO as CartItemDAO
+    participant DB as SQLite / PostgreSQL
+
+    Client->>Router: POST /api/v1/cart/items\n{ product_id, quantity }
+    Router->>CartSvc: add_to_cart(user_id, product_id, quantity)
+    CartSvc->>CartSvc: acquire RLock
+    CartSvc->>ProductSvc: get_by_id(product_id)
+    ProductSvc-->>CartSvc: Product
+    CartSvc->>CartSvc: validate quantity > 0\nvalidate quantity ≤ product.stock
+    CartSvc->>Repo: find_existing_cart_item(user_id, product_id)
+    Repo->>CartDAO: find_by_cart_and_product(user_id, product_id)
+    CartDAO->>DB: SELECT * FROM cart_items WHERE ...
+    DB-->>CartDAO: row dict or None
+    alt Item already in cart
+        CartDAO-->>Repo: existing row
+        Repo-->>CartSvc: CartItem
+        CartSvc->>Repo: save(updated CartItem)
+        Repo->>CartDAO: update(id, { quantity })
+        CartDAO->>DB: UPDATE cart_items SET quantity = ? WHERE id = ?
+    else New item
+        CartDAO-->>Repo: None
+        Repo-->>CartSvc: None
+        CartSvc->>Repo: save(new CartItem)
+        Repo->>CartDAO: insert({ cart_id, product_id, quantity })
+        CartDAO->>DB: INSERT INTO cart_items ...
+    end
+    DB-->>CartDAO: lastrowid (captured before commit)
+    CartDAO->>DB: COMMIT
+    CartDAO->>DB: SELECT * FROM cart_items WHERE id = lastrowid
+    DB-->>CartDAO: row dict
+    CartDAO-->>Repo: row dict
+    Repo-->>CartSvc: CartItem
+    CartSvc->>CartSvc: release RLock
+    CartSvc-->>Router: CartItem
+    Router-->>Client: 201 CartItemResponse
+```
+
+---
+
+## 5. Order Placement
+
+```mermaid
+sequenceDiagram
+    actor Client
+    participant Router as orders.py
+    participant OrderSvc as OrderService
+    participant CartSvc as CartService
+    participant ProductSvc as ProductService
+    participant PayFac as PaymentFactory
+    participant Provider as PaymentProvider
+    participant OrderRepo as OrderRepository
+    participant EmailN as EmailNotifier
+    participant InvU as InventoryUpdater
+
+    Client->>Router: POST /api/v1/orders\n{ payment_method }
+    Router->>OrderSvc: place_order(user_id, payment_method)
+    OrderSvc->>OrderSvc: acquire RLock
+
+    OrderSvc->>CartSvc: get_cart(user_id)
+    CartSvc-->>OrderSvc: [CartItem, ...]
+
+    OrderSvc->>PayFac: create(payment_method)
+    PayFac-->>OrderSvc: PaymentProvider (CreditCard or PayPal)
+
+    loop For each cart item
+        OrderSvc->>ProductSvc: get_by_id(product_id)
+        ProductSvc-->>OrderSvc: Product
+    end
+    OrderSvc->>OrderSvc: total = Σ(price × quantity)
+
+    OrderSvc->>Provider: process(total)
+    Provider-->>OrderSvc: True
+
+    OrderSvc->>OrderRepo: save(Order(user_id, method, total, "pending"))
+    OrderRepo-->>OrderSvc: Order(id=N, status="pending")
+
+    loop For each cart item
+        OrderSvc->>OrderRepo: save_order_item(OrderItem(order_id, product_id, quantity, unit_price))
+    end
+
+    OrderSvc->>CartSvc: clear_cart(user_id)
+    CartSvc->>OrderRepo: delete_cart_items(user_id)
+
+    OrderSvc->>OrderRepo: update_status(order.id, "completed")
+    OrderRepo-->>OrderSvc: Order(id=N, status="completed")
+
+    OrderSvc->>EmailN: on_order_placed(order)
+    EmailN-->>OrderSvc: (logs confirmation)
+
+    OrderSvc->>InvU: on_order_placed(order)
+    InvU->>OrderRepo: get_order_items(order.id)
+    OrderRepo-->>InvU: [OrderItem, ...]
+    loop For each order item
+        InvU->>ProductSvc: get_by_id(product_id)
+        ProductSvc-->>InvU: Product
+        InvU->>ProductSvc: update(product_id, stock=max(0, stock - quantity))
+        ProductSvc->>ProductSvc: invalidate cache "product:{id}", "products:all"
+    end
+
+    OrderSvc->>OrderSvc: release RLock
+    OrderSvc-->>Router: Order
+    Router-->>Client: 201 OrderResponse
+```
+
+---
+
+## 6. Thread Safety — Concurrent Cart Access
+
+```mermaid
+sequenceDiagram
+    participant T1 as Thread 1 (User A)
+    participant T2 as Thread 2 (User A)
+    participant Lock as RLock
+    participant CartSvc as CartService
+
+    T1->>Lock: acquire RLock
+    T2->>Lock: acquire RLock (blocked)
+    T1->>CartSvc: add_to_cart(user_id=1, product_id=5, qty=1)
+    Note over T1,CartSvc: stock check, insert, commit
+    T1->>Lock: release RLock
+    Lock-->>T2: acquired
+    T2->>CartSvc: add_to_cart(user_id=1, product_id=5, qty=1)
+    Note over T2,CartSvc: sees updated stock after T1 committed
+    T2->>Lock: release RLock
+```
+
+The `RLock` in `CartService` ensures that concurrent requests for the same user are serialized. The same pattern applies in `OrderService` for concurrent order placement.
+
+---
+
+## Component Interactions Summary
+
+```mermaid
+flowchart LR
+    subgraph HTTP
+        R[Router]
+    end
+    subgraph Services
+        AS[AuthService]
+        US[UserService]
+        PS[ProductService]
+        CS[CartService]
+        OS[OrderService]
+    end
+    subgraph Infra
+        C[(InMemoryCache)]
+        PF[PaymentFactory]
+        OB[Observers]
+    end
+    subgraph Data
+        UR[UserRepository]
+        PR[ProductRepository]
+        OR[OrderRepository]
+        UD[UserDAO]
+        PD[ProductDAO]
+        OD[OrderDAO]
+        CD[CartItemDAO]
+        ID[OrderItemDAO]
+        DB[(Database)]
+    end
+
+    R --> AS & US & PS & CS & OS
+    PS <--> C
+    OS --> PF
+    OS --> OB
+    OB --> OR & PS
+    AS & US --> UR
+    PS --> PR
+    CS & OS --> OR
+    UR --> UD --> DB
+    PR --> PD --> DB
+    OR --> OD & CD & ID --> DB
+```
